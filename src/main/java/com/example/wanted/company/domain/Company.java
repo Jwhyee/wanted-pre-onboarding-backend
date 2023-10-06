@@ -1,8 +1,10 @@
 package com.example.wanted.company.domain;
 
+import com.example.wanted.recruit.domain.Recruit;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,5 +25,8 @@ public class Company {
 
     @Column(nullable = false)
     private String location;
+
+    @OneToMany
+    private List<Recruit> recruitList;
 
 }

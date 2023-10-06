@@ -1,5 +1,6 @@
-package com.example.wanted.company.web.controller;
+package com.example.wanted.recruit.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -16,12 +17,13 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-class CompanyControllerTest {
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK)
+class RecruitControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -29,29 +31,32 @@ class CompanyControllerTest {
     @Autowired
     private WebApplicationContext ctx;
 
-    private final String baseUrl = "/api/company";
+    private final String baseUrl = "/api/recruit";
 
     private final String req = """
             {
-              "name" : "%s",
-              "nation" : "%s",
-              "location" : "%s"
+              "companyId" : 1,
+              "position" : "%s",
+              "compensation" : 1000000,
+              "content" : "%s",
+              "techStack" : "%s"
             }
             """;
 
     @BeforeEach
-    void init() {
+    void init() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .alwaysDo(print())
                 .build();
+        saveCompany();
     }
 
     @Nested
-    @DisplayName("회사 저장")
+    @DisplayName("채용 공고 저장")
     class RecruitSaveApiTest {
         @Test
-        @DisplayName("회사 저장 실패 - 데이터 누락")
+        @DisplayName("채용 공고 저장 실패 - 데이터 누락")
         void saveFailTest() throws Exception {
             MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(baseUrl)
                             .content(req.formatted("", "", ""))
@@ -63,18 +68,38 @@ class CompanyControllerTest {
         }
 
         @Test
-        @DisplayName("회사 저장 성공")
+        @DisplayName("채용 공고 저장 성공")
         void saveSuccessTest() throws Exception {
             MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(baseUrl)
-                            .content(req.formatted("네이버",
-                                    "한국",
-                                    "판교"))
+                            .content(req.formatted("백엔드 주니어 개발자",
+                                    "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..",
+                                    "Python"))
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isCreated())
                     .andReturn();
 
             assertThat(mvcResult.getResponse()).isNotNull();
         }
+    }
+
+    private final String cpReq = """
+            {
+              "name" : "%s",
+              "nation" : "%s",
+              "location" : "%s"
+            }
+            """;
+
+    private String saveCompany() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/company")
+                        .content(cpReq.formatted("네이버",
+                                "한국",
+                                "판교"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        return mvcResult.getResponse().getRedirectedUrl();
     }
 
 }
