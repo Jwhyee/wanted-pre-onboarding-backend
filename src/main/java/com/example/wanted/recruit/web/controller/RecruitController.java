@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,4 +43,10 @@ public class RecruitController {
         recruitService.deleteRecruit(id);
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAllRecruitApi() {
+        List<RecruitVO> recruitList = recruitService.findAllRecruit();
+
+        return ResponseEntity.ok(recruitList);
+    }
 }

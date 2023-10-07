@@ -13,6 +13,8 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RecruitService {
@@ -55,5 +57,12 @@ public class RecruitService {
     public void deleteRecruit(Long id) {
         Recruit currentRecruit = findById(id);
         recruitRepository.delete(currentRecruit);
+    }
+
+    public List<RecruitVO> findAllRecruit() {
+        List<Recruit> recruitList = recruitRepository.findAll();
+        return recruitList.stream()
+                .map(RecruitVO::fromEntity)
+                .toList();
     }
 }

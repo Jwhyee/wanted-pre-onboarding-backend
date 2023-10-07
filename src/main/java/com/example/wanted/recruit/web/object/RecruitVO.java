@@ -10,6 +10,14 @@ import lombok.*;
 public class RecruitVO {
 
     private Long id;
+
+    /* Company */
+
+    private String name;
+    private String nation;
+    private String location;
+
+    /* Recruit */
     private String position;
     private int compensation;
     private String content;
@@ -18,6 +26,9 @@ public class RecruitVO {
     public static RecruitVO fromEntity(Recruit recruit) {
         return builder()
                 .id(recruit.getId())
+                .name(recruit.getCompany().getName())
+                .nation(recruit.getCompany().getNation())
+                .location(recruit.getCompany().getLocation())
                 .position(recruit.getPosition())
                 .compensation(recruit.getCompensation())
                 .content(recruit.getContent())

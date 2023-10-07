@@ -106,3 +106,61 @@ C : Company
 
 - 만약 채용 공고가 없을 경우 `NotFoundException`을 던짐
 - 채용 공고의 id가 존재하지 않을 경우에 대한 테스트 구현
+
+### 4. 채용공고 조회
+
+> 전체 체용공고 조회
+
+```json
+Example)
+[
+    {
+      "채용공고_id" : 채용공고_id,
+      "회사명" : "원티드랩",
+      "국가" : "한국",
+      "지역" : "서울",
+      "position" : "백엔드 주니어 개발자",
+      "compensation" : 1500000,
+      "techStack" : "Python"
+    },
+    {
+      "채용공고_id" : 채용공고_id,
+      "회사명" : "네이버",
+      "국가" : "한국",
+      "지역" : "판교",
+      "position" : "Django 백엔드 개발자",
+      "compensation" : 1000000,
+      "techStack" : "Django"
+    },
+  ...
+]
+```
+
+#### 구현 과정 및 고려사항
+
+**4-1-1. 저장된 채용 공고를 모두 출력해야 한다.**
+
+```json
+[
+  {
+    "id":1,
+    "name":"원티드랩",
+    "nation":"한국",
+    "location":"판교",
+    "position":"백엔드 주니어 개발자",
+    "compensation":1000000,
+    "content":"원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..",
+    "techStack":"Python"
+  },
+  {
+    "id":2,
+    "name":"네이버",
+    "nation":"한국",
+    "location":"정자",
+    "position":"백엔드 시니어 개발자",
+    "compensation":1000000,
+    "content":"네이버에서 백엔드 개발자를 '적극' 채용합니다. 자격요건은..",
+    "techStack":"Java"
+  }
+]
+```

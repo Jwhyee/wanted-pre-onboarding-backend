@@ -1,10 +1,12 @@
 package com.example.wanted.recruit.web.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestClassOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 class RecruitControllerTest {
 
@@ -53,6 +56,7 @@ class RecruitControllerTest {
     }
 
     @Nested
+    @Order(1)
     @DisplayName("채용 공고 저장")
     class RecruitSaveApiTest {
         @Test
@@ -83,6 +87,7 @@ class RecruitControllerTest {
     }
 
     @Nested
+    @Order(2)
     @DisplayName("채용 공고 수정")
     class RecruitUpdateApiTest {
         @Test
@@ -130,6 +135,7 @@ class RecruitControllerTest {
     }
 
     @Nested
+    @Order(4)
     @DisplayName("채용 공고 삭제")
     class RecruitDeleteApiTest {
         @Test
@@ -148,6 +154,22 @@ class RecruitControllerTest {
         void deleteSuccessTest() throws Exception {
             String saveUrl = saveRecruit();
             MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete(saveUrl)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            assertThat(mvcResult.getResponse()).isNotNull();
+        }
+    }
+
+    @Nested
+    @Order(3)
+    @DisplayName("채용 공고 조회")
+    class RecruitGetApiTest {
+        @Test
+        @DisplayName("전체 채용 공고 조회 성공")
+        void getAllRecruitSuccessTest() throws Exception {
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(baseUrl)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andReturn();
