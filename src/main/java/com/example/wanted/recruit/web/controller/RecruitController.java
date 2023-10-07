@@ -36,4 +36,10 @@ public class RecruitController {
         recruitService.updateRecruit(id, dto);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteRecruitApi(@PathVariable Long id) {
+        recruitService.deleteRecruit(id);
+    }
+
 }

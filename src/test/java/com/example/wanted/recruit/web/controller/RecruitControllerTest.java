@@ -129,6 +129,33 @@ class RecruitControllerTest {
 
     }
 
+    @Nested
+    @DisplayName("채용 공고 삭제")
+    class RecruitDeleteApiTest {
+        @Test
+        @DisplayName("채용 공고 삭제 실패 - 존재하지 않는 공고")
+        void deleteFailTestByIdNotFound() throws Exception {
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete(baseUrl + "/999999")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andReturn();
+
+            assertThat(mvcResult.getResponse()).isNotNull();
+        }
+
+        @Test
+        @DisplayName("채용 공고 삭제 성공")
+        void deleteSuccessTest() throws Exception {
+            String saveUrl = saveRecruit();
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete(saveUrl)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            assertThat(mvcResult.getResponse()).isNotNull();
+        }
+    }
+
     private String saveCompany() throws Exception {
         String cpReq = """
                 {

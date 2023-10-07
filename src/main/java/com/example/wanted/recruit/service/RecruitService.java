@@ -31,8 +31,6 @@ public class RecruitService {
                 .techStack(dto.getTechStack())
                 .build());
 
-        currentCompany.getRecruitList().add(recruit);
-
         return RecruitVO.fromEntity(recruit);
     }
 
@@ -51,5 +49,11 @@ public class RecruitService {
     public void updateRecruit(Long id, RecruitDTO dto) {
         Recruit currentRecruit = findById(id);
         currentRecruit.updateBasicInfo(dto.getPosition(), dto.getCompensation(), dto.getContent(), dto.getTechStack());
+    }
+
+    @Transactional
+    public void deleteRecruit(Long id) {
+        Recruit currentRecruit = findById(id);
+        recruitRepository.delete(currentRecruit);
     }
 }
