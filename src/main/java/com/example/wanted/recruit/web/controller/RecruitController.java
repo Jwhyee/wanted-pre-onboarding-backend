@@ -44,8 +44,9 @@ public class RecruitController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllRecruitApi() {
-        List<RecruitVO> recruitList = recruitService.findAllRecruit();
+    public ResponseEntity<?> getAllRecruitApi(@RequestParam(required = false) String search) {
+
+        List<RecruitVO> recruitList = recruitService.findAllRecruit(search);
 
         return ResponseEntity.ok(recruitList);
     }

@@ -176,6 +176,17 @@ class RecruitControllerTest {
 
             assertThat(mvcResult.getResponse()).isNotNull();
         }
+
+        @Test
+        @DisplayName("채용 공고 검색 조회 성공")
+        void getRecruitSearchSuccessTest() throws Exception {
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(baseUrl + "?search=적극")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            assertThat(mvcResult.getResponse()).isNotNull();
+        }
     }
 
     private String saveCompany() throws Exception {

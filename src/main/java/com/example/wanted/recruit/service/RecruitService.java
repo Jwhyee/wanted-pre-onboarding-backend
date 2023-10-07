@@ -3,13 +3,11 @@ package com.example.wanted.recruit.service;
 import com.example.wanted.common.exception.runtime.NotFoundException;
 import com.example.wanted.company.domain.Company;
 import com.example.wanted.company.domain.CompanyRepository;
-import com.example.wanted.company.service.CompanyService;
 import com.example.wanted.recruit.domain.Recruit;
 import com.example.wanted.recruit.domain.RecruitRepository;
 import com.example.wanted.recruit.web.object.RecruitDTO;
 import com.example.wanted.recruit.web.object.RecruitVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,8 +57,12 @@ public class RecruitService {
         recruitRepository.delete(currentRecruit);
     }
 
-    public List<RecruitVO> findAllRecruit() {
-        List<Recruit> recruitList = recruitRepository.findAll();
+    public List<RecruitVO> findAllRecruit(String search) {
+        List<Recruit> recruitList = null;
+
+        if(search == null || search.length() == 0) recruitList = recruitRepository.findAll();
+        else recruitList = recruitRepository.findAllByKeyword(search);
+
         return recruitList.stream()
                 .map(RecruitVO::fromEntity)
                 .toList();
