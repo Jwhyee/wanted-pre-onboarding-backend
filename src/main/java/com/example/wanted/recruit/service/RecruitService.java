@@ -40,4 +40,16 @@ public class RecruitService {
         return companyRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
     }
+
+    @Transactional(readOnly = true)
+    public Recruit findById(Long id) {
+        return recruitRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+    }
+
+    @Transactional
+    public void updateRecruit(Long id, RecruitDTO dto) {
+        Recruit currentRecruit = findById(id);
+        currentRecruit.updateBasicInfo(dto.getPosition(), dto.getCompensation(), dto.getContent(), dto.getTechStack());
+    }
 }

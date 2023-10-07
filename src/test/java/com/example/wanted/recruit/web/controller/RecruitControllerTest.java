@@ -82,19 +82,77 @@ class RecruitControllerTest {
         }
     }
 
-    private final String cpReq = """
-            {
-              "name" : "%s",
-              "nation" : "%s",
-              "location" : "%s"
-            }
-            """;
+    @Nested
+    @DisplayName("채용 공고 수정")
+    class RecruitUpdateApiTest {
+        @Test
+        @DisplayName("채용 공고 수정 실패 - 존재하지 않는 아이디")
+        void updateFailTestByIdNotFound() throws Exception {
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put(baseUrl + "/999999")
+                            .content(req.formatted("백엔드 주니어 개발자",
+                                    "원티드랩에서 백엔드 주니어 개발자를 '적극' 채용합니다. 자격요건은..",
+                                    "Python"))
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andReturn();
+
+            assertThat(mvcResult.getResponse()).isNotNull();
+        }
+
+        @Test
+        @DisplayName("채용 공고 수정 실패 - 데이터 누락")
+        void updateFailTestByValid() throws Exception {
+            String saveUrl = saveRecruit();
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put(saveUrl)
+                            .content(req.formatted("", "", ""))
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest())
+                    .andReturn();
+
+            assertThat(mvcResult.getResponse()).isNotNull();
+        }
+
+        @Test
+        @DisplayName("채용 공고 수정 성공")
+        void updateSuccessTest() throws Exception {
+            String saveUrl = saveRecruit();
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put(saveUrl)
+                            .content(req.formatted("백엔드 시니어 개발자",
+                                    "원티드랩에서 백엔드 개발자를 '적극' 채용합니다. 자격요건은..",
+                                    "Java"))
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            assertThat(mvcResult.getResponse()).isNotNull();
+        }
+
+    }
 
     private String saveCompany() throws Exception {
+        String cpReq = """
+                {
+                  "name" : "%s",
+                  "nation" : "%s",
+                  "location" : "%s"
+                }
+                """;
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/company")
                         .content(cpReq.formatted("네이버",
                                 "한국",
                                 "판교"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        return mvcResult.getResponse().getRedirectedUrl();
+    }
+
+    private String saveRecruit() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(baseUrl)
+                        .content(req.formatted("백엔드 주니어 개발자",
+                                "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..",
+                                "Python"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn();

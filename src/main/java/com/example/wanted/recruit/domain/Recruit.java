@@ -35,4 +35,11 @@ public class Recruit {
 
     @ManyToOne
     private Company company;
+
+    public void updateBasicInfo(String position, int compensation, String content, String techStack) {
+        this.position = position;
+        this.compensation = compensation;
+        this.content = content;
+        this.techStack = techStack;
+    }
 }
