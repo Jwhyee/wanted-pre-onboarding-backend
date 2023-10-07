@@ -22,6 +22,7 @@ public class CompanyService {
                 .name(dto.getName())
                 .nation(dto.getNation())
                 .location(dto.getLocation())
+                .recruitList(new ArrayList<>())
                 .build());
 
         return CompanyVO.fromEntity(entity);

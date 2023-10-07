@@ -31,6 +31,8 @@ public class RecruitService {
                 .techStack(dto.getTechStack())
                 .build());
 
+        currentCompany.getRecruitList().add(recruit);
+
         return RecruitVO.fromEntity(recruit);
     }
 
@@ -58,7 +60,7 @@ public class RecruitService {
     }
 
     public List<RecruitVO> findAllRecruit(String search) {
-        List<Recruit> recruitList = null;
+        List<Recruit> recruitList;
 
         if(search == null || search.length() == 0) recruitList = recruitRepository.findAll();
         else recruitList = recruitRepository.findAllByKeyword(search);

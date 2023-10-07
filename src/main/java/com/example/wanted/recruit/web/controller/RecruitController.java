@@ -2,6 +2,7 @@ package com.example.wanted.recruit.web.controller;
 
 import com.example.wanted.recruit.service.RecruitService;
 import com.example.wanted.recruit.web.object.RecruitDTO;
+import com.example.wanted.recruit.web.object.RecruitDetailVO;
 import com.example.wanted.recruit.web.object.RecruitVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,10 +45,19 @@ public class RecruitController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllRecruitApi(@RequestParam(required = false) String search) {
+    public ResponseEntity<List<RecruitVO>> getAllRecruitApi(@RequestParam(required = false) String search) {
 
         List<RecruitVO> recruitList = recruitService.findAllRecruit(search);
 
         return ResponseEntity.ok(recruitList);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RecruitDetailVO> getRecruitApi(@PathVariable Long id) {
+
+        RecruitDetailVO recruitVO = RecruitDetailVO.fromEntity(recruitService.findById(id));
+
+        return ResponseEntity.ok(recruitVO);
+    }
+
 }

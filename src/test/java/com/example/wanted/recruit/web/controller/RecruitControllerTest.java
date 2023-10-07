@@ -139,6 +139,7 @@ class RecruitControllerTest {
     @DisplayName("채용 공고 삭제")
     class RecruitDeleteApiTest {
         @Test
+        @Order(1)
         @DisplayName("채용 공고 삭제 실패 - 존재하지 않는 공고")
         void deleteFailTestByIdNotFound() throws Exception {
             MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete(baseUrl + "/999999")
@@ -150,6 +151,7 @@ class RecruitControllerTest {
         }
 
         @Test
+        @Order(2)
         @DisplayName("채용 공고 삭제 성공")
         void deleteSuccessTest() throws Exception {
             String saveUrl = saveRecruit();
@@ -181,6 +183,29 @@ class RecruitControllerTest {
         @DisplayName("채용 공고 검색 조회 성공")
         void getRecruitSearchSuccessTest() throws Exception {
             MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(baseUrl + "?search=적극")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            assertThat(mvcResult.getResponse()).isNotNull();
+        }
+
+        @Test
+        @DisplayName("채용 공고 상세 조회 실패 - 존재하지 않는 공고")
+        void getRecruitFailTestByIdNotFound() throws Exception {
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(baseUrl + "/99999")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andReturn();
+
+            assertThat(mvcResult.getResponse()).isNotNull();
+        }
+
+        @Test
+        @DisplayName("채용 공고 상세 조회 성공")
+        void getRecruitSuccessTest() throws Exception {
+            String saveUrl = saveRecruit();
+            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(saveUrl)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andReturn();

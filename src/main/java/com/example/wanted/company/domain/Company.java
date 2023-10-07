@@ -26,4 +26,7 @@ public class Company {
     @Column(nullable = false)
     private String location;
 
+    @OneToMany
+    private List<Recruit> recruitList;
+
 }
