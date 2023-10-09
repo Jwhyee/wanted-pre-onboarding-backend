@@ -52,7 +52,7 @@ C : Company
 
 - `Service(R) to Service(C)`의 형태가 아닌 `Service(R) to Repository(C)`를 의존하도록 설정
   - 타 도메인의 저장소를 의존하고 있기 때문에 외부에서 접근하지 못하도록 `private`로 지정
-  - 추후 파사드 패턴으로 리팩터링 예정
+  - 기존 `Repository`를 의존 받던 형태에서 파사드 패턴으로 리팩터링 진행
 
 **1-2. 필드가 비어있으면 안 된다.**
 
