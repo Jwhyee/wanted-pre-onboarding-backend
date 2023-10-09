@@ -26,7 +26,8 @@ public class Company {
     @Column(nullable = false)
     private String location;
 
-    @OneToMany
+    @OneToMany(mappedBy = "id", targetEntity = Recruit.class,
+            cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Recruit> recruitList;
 
 }
