@@ -1,6 +1,6 @@
 package com.example.wanted.apply.web.controller;
 
-import com.example.wanted.apply.service.ApplyService;
+import com.example.wanted.apply.service.ApplyFacade;
 import com.example.wanted.apply.web.object.ApplyDto;
 import com.example.wanted.apply.web.object.ApplyVO;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +18,11 @@ import javax.validation.Valid;
 @RequestMapping("/api/apply")
 public class ApplyController {
 
-    private final ApplyService applyService;
+    private final ApplyFacade applyFacade;
 
     @PostMapping
     public ResponseEntity<String> saveApplyApi(@RequestBody @Valid ApplyDto dto) {
-        ApplyVO applyVO = applyService.saveApply(dto);
+        ApplyVO applyVO = applyFacade.saveApply(dto);
 
         return ResponseEntity.created(
                         ServletUriComponentsBuilder
