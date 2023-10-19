@@ -17,6 +17,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -62,7 +63,8 @@ class ApplyControllerTest {
                     .andExpect(status().isBadRequest())
                     .andReturn();
 
-            assertThat(mvcResult.getResponse()).isNotNull();
+            assertThat(mvcResult.getResponse().getContentAsString())
+                    .isEqualTo("[\"값을 확인해주세요.\",\"값을 확인해주세요.\"]");
         }
 
         @Test
@@ -74,7 +76,8 @@ class ApplyControllerTest {
                     .andExpect(status().isNotFound())
                     .andReturn();
 
-            assertThat(mvcResult.getResponse()).isNotNull();
+            assertThat(mvcResult.getResponse().getContentAsString())
+                    .isEqualTo("조회된 데이터가 없습니다.");
         }
 
         @Test

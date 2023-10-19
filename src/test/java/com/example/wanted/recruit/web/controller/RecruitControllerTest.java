@@ -35,6 +35,8 @@ class RecruitControllerTest {
     private WebApplicationContext ctx;
 
     private final String baseUrl = "/api/recruit";
+    private final String VALID_LOG = "[\"내용을 입력해주세요.\",\"내용을 입력해주세요.\",\"내용을 입력해주세요.\"]";
+    private final String NOT_FOUND_LOG = "조회된 데이터가 없습니다.";
 
     private final String req = """
             {
@@ -68,7 +70,8 @@ class RecruitControllerTest {
                     .andExpect(status().isBadRequest())
                     .andReturn();
 
-            assertThat(mvcResult.getResponse()).isNotNull();
+            assertThat(mvcResult.getResponse().getContentAsString())
+                    .isEqualTo(VALID_LOG);
         }
 
         @Test
@@ -101,7 +104,8 @@ class RecruitControllerTest {
                     .andExpect(status().isNotFound())
                     .andReturn();
 
-            assertThat(mvcResult.getResponse()).isNotNull();
+            assertThat(mvcResult.getResponse().getContentAsString())
+                    .isEqualTo(NOT_FOUND_LOG);
         }
 
         @Test
@@ -114,7 +118,8 @@ class RecruitControllerTest {
                     .andExpect(status().isBadRequest())
                     .andReturn();
 
-            assertThat(mvcResult.getResponse()).isNotNull();
+            assertThat(mvcResult.getResponse().getContentAsString())
+                    .isEqualTo(VALID_LOG);
         }
 
         @Test
@@ -147,7 +152,8 @@ class RecruitControllerTest {
                     .andExpect(status().isNotFound())
                     .andReturn();
 
-            assertThat(mvcResult.getResponse()).isNotNull();
+            assertThat(mvcResult.getResponse().getContentAsString())
+                    .isEqualTo(NOT_FOUND_LOG);
         }
 
         @Test
@@ -198,7 +204,8 @@ class RecruitControllerTest {
                     .andExpect(status().isNotFound())
                     .andReturn();
 
-            assertThat(mvcResult.getResponse()).isNotNull();
+            assertThat(mvcResult.getResponse().getContentAsString())
+                    .isEqualTo(NOT_FOUND_LOG);
         }
 
         @Test

@@ -31,6 +31,7 @@ class MemberControllerTest {
     private WebApplicationContext ctx;
 
     private final String baseUrl = "/api/member";
+    private final String VALID_LOG = "[\"내용을 입력해주세요.\",\"내용을 입력해주세요.\"]";
 
     private final String req = """
             {
@@ -59,7 +60,8 @@ class MemberControllerTest {
                     .andExpect(status().isBadRequest())
                     .andReturn();
 
-            assertThat(mvcResult.getResponse()).isNotNull();
+            assertThat(mvcResult.getResponse().getContentAsString())
+                    .isEqualTo(VALID_LOG);
         }
 
         @Test
